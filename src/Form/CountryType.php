@@ -10,7 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
-class AddCountryType extends AbstractType
+class CountryType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
