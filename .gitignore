@@ -4,11 +4,12 @@
 /.env.local.php
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
+/public/build/
 /public/bundles/
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
-
+/node_modules/
 ###> phpunit/phpunit ###
 /phpunit.xml
 .phpunit.result.cache
