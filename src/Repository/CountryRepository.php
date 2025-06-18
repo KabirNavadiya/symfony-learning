@@ -39,6 +39,16 @@ class CountryRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByNameLike(string $search): array
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.name LIKE :search')
+            ->setParameter('search', '%' . $search . '%')
+            ->orderBy('c.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Country[] Returns an array of Country objects
 //     */

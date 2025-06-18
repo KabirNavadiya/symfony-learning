@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit City{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="mb-4">Edit City</h1>
+
+        {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
+
+        <!-- Country Select -->
+        <div class="mb-3">
+            {{ form_label(form.country, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.country, {'attr': {'class': 'form-select'}}) }}
+            {{ form_errors(form.country) }}
+        </div>
+
+        <div id="city-fields">
+            <div class="city-field input-group mb-2">
+                {{ form_widget(form.name, {
+                    'attr': {
+                        'class': 'form-control',
+                        'name': 'cities[]',
+                        'placeholder': 'City Name',
+                        'required': true
+                    }
+                }) }}
+            </div>
+        </div>
+
+        <!-- Active Checkbox -->
+        <div class="form-check mb-3">
+            {{ form_widget(form.active, {'attr': {'class': 'form-check-input'}}) }}
+            {{ form_label(form.active, null, {'label_attr': {'class': 'form-check-label'}}) }}
+            {{ form_errors(form.active) }}
+        </div>
+
+        <!-- Submit + Back -->
+        <button type="submit" class="btn btn-success">Save</button>
+        <a href="{{ path('app_country_page') }}" class="btn btn-secondary">Back</a>
+
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+

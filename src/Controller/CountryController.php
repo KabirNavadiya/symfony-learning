@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Country;
-use App\Form\AddCountryType;
+use App\Form\CountryType;
 use App\Repository\CountryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,11 +24,24 @@ class CountryController extends AbstractController
     /**
      * @Route("/country", name="app_country_page")
      */
-    public function country(CountryRepository $countryRepository)
+    public function country(Request $request, CountryRepository $countryRepository)
     {
-        $countries = $countryRepository->findAll();
-        return $this->render('country/country.html.twig',[
-            'countries' => $countries,
+
+        $search = $request->query->get('search');
+
+        if ($search) {
+            $countries = $countryRepository->findByNameLike($search);
+
+            if (!$countries) {
+                $this->addFlash('error', 'No countries found for the search term.');
+            }
+        } else {
+            $countries = $countryRepository->findAll();
+        }
+
+        return $this->render('country/city.html.twig', [
+            'countries' => $countries ?? [],
+            'search' => $search,
         ]);
     }
 
@@ -38,7 +51,7 @@ class CountryController extends AbstractController
     public function addCountryPage(Request $request, EntityManagerInterface $entityManager):Response
     {
         $country = new Country();
-        $form = $this->createForm(AddCountryType::class, $country);
+        $form = $this->createForm(CountryType::class, $country);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($country);
@@ -47,7 +60,7 @@ class CountryController extends AbstractController
             $this->addFlash('success', 'Country added successfully!');
             return $this->redirectToRoute('app_country_page');
         }
-        return $this->render('country/add_country.html.twig', [
+        return $this->render('country/add_country_form.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -60,7 +73,7 @@ class CountryController extends AbstractController
         if(!$country) {
             throw $this->createNotFoundException('Country not found');
         }
-        $form = $this->createForm(AddCountryType::class, $country);
+        $form = $this->createForm(CountryType::class, $country);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($country);
@@ -69,7 +82,7 @@ class CountryController extends AbstractController
             $this->addFlash('success', 'Country updated successfully!');
             return $this->redirectToRoute('app_country_page');
         }
-        return $this->render('country/edit_country.html.twig', [
+        return $this->render('country/edit_country_form.html.twig', [
             'form' => $form->createView(),
             'country' => $country,
         ]);
