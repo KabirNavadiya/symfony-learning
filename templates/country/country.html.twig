@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Country{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Countries</h1>
+        <a href="{{ path('app_add_country') }}" class="btn btn-primary">+ Add Country</a>
+    </div>
+
+    {% for flash in app.flashes('success') %}
+        <div data-controller="flash" class="alert alert-success fade show">
+            {{ flash }}
+        </div>
+    {% endfor %}
+
+    <table id="countryTable" class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for country in countries %}
+            <tr>
+                <td>{{ country.id }}</td>
+                <td>{{ country.name }}</td>
+                <td>
+                    <a href="{{ path('app_edit_country',{ id: country.id}) }}" class="btn btn-sm btn-warning">Edit</a>
+                    <form method="post" action="{{ path('app_delete_country',{ id : country.id }) }}" style="display:inline-block;" onsubmit="return confirm('Are you sure?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ country.id) }}">
+                        <button class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}
