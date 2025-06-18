@@ -39,7 +39,7 @@ class CountryController extends AbstractController
             $countries = $countryRepository->findAll();
         }
 
-        return $this->render('country/city.html.twig', [
+        return $this->render('country/country.html.twig', [
             'countries' => $countries ?? [],
             'search' => $search,
         ]);
