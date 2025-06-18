@@ -8,6 +8,7 @@ use App\Repository\CityRepository;
 use App\Repository\CountryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -108,5 +109,25 @@ class CityController extends AbstractController
 
         $this->addFlash('success', 'City deleted successfully!');
         return $this->redirectToRoute('app_city_page');
+    }
+
+    /**
+     * @Route("/get-cities/{id}", name="get_cities_by_country", methods={"GET"})
+     */
+    public function getCitiesByCountry(int $id, CityRepository $cityRepository): JsonResponse
+    {
+        $cities = $cityRepository->findBy([
+            'country' => $id,
+            'isDeleted' => false,
+        ]);
+
+        $data = [];
+        foreach ($cities as $city) {
+            $data[] = [
+                'id' => $city->getId(),
+                'name' => $city->getName(),
+            ];
+        }
+        return new JsonResponse($data);
     }
 }
