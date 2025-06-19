@@ -54,11 +54,17 @@ class CityType extends AbstractType
                 $form->get('country')->addError(new FormError('Please select a country.'));
             }
 
-            // Check if the city name already exists in the selected country
-             $existingCity = $this->cityRepository->findOneBy(['name' => $data->getName(), 'country' => $data->getCountry()]);
-             if ($existingCity) {
-                 $form->get('name')->addError(new FormError('This city already exists in the selected country.'));
-             }
+            if ($data->getName() && $data->getCountry()) {
+                $existingCity = $this->cityRepository->findOneBy([
+                    'name' => $data->getName(),
+                    'country' => $data->getCountry(),
+                ]);
+
+                // Skip current when checking for existing city
+                if ($existingCity && $existingCity->getId() !== $data->getId()) {
+                    $form->get('name')->addError(new FormError('This city already exists in the selected country.'));
+                }
+            }
         });
     }
 
