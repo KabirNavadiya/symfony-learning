@@ -29,13 +29,13 @@ class Address
 
     /**
      * @ORM\ManyToOne(targetEntity=City::class, inversedBy="addresses")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $city;
 
     /**
      * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="addresses")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $country;
 

@@ -7,7 +7,10 @@
 
     {{ form_start(form) }}
     <div class="form-group">
-        {{ form_row(form.name) }}
+        {{ form_widget(form.name) }}
+        {% if (form_errors(form.name)) %}
+            <span class="form-error">{{ form_errors(form.name) }}</span>
+        {% endif %}
     </div>
     <button class="btn btn-success">Save</button>
     <a href="{{ path('app_country_page') }}" class="btn btn-secondary">Back</a>

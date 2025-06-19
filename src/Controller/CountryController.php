@@ -54,6 +54,9 @@ class CountryController extends AbstractController
         $form = $this->createForm(CountryType::class, $country);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $processedCountry = $this->preprocessingData($country->getName());
+            $country->setName($processedCountry);
             $entityManager->persist($country);
             $entityManager->flush();
 
@@ -76,6 +79,8 @@ class CountryController extends AbstractController
         $form = $this->createForm(CountryType::class, $country);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $processedCountry = $this->preprocessingData($country->getName());
+            $country->setName($processedCountry);
             $entityManager->persist($country);
             $entityManager->flush();
 
@@ -103,5 +108,10 @@ class CountryController extends AbstractController
 
         $this->addFlash('success', 'Country deleted successfully!');
         return $this->redirectToRoute('app_country_page');
+    }
+
+    public function preprocessingData(string $input): string
+    {
+        return strtolower($input);
     }
 }

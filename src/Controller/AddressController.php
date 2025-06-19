@@ -33,6 +33,10 @@ class AddressController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $address = $form->getData();
+
+            $processedAddress = $this->preprocessingData($address->getStreetName());
+            $address->setStreetName($processedAddress);
+
             $entityManager->persist($address);
             $entityManager->flush();
 
@@ -58,6 +62,9 @@ class AddressController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $processedAddress = $this->preprocessingData($address->getStreetName());
+            $address->setStreetName($processedAddress);
+
             $entityManager->flush();
             $this->addFlash('success', 'Address updated successfully!');
             return $this->redirectToRoute('app_address_page');
@@ -84,5 +91,11 @@ class AddressController extends AbstractController
         $this->addFlash('success', 'Address deleted successfully!');
 
         return $this->redirectToRoute('app_address_page');
+    }
+
+
+    public function preprocessingData(string $input): string
+    {
+        return strtolower($input);
     }
 }
