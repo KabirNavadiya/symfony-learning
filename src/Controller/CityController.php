@@ -55,7 +55,7 @@ class CityController extends AbstractController
             foreach ($cityNames as $name) {
 
                 $city = new City();
-                $city->setName($name);
+                $city->setName($this->preprocessingData($name));
                 $city->setCountry($country);
                 $city->setActive($active);
                 $entityManager->persist($city);
@@ -130,4 +130,9 @@ class CityController extends AbstractController
         }
         return new JsonResponse($data);
     }
+    public function preprocessingData(string $input): string
+    {
+        return strtolower($input);
+    }
+
 }

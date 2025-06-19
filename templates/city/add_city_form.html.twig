@@ -12,7 +12,9 @@
         <div class="mb-3">
             {{ form_label(form.country, null, {'label_attr': {'class': 'form-label'}}) }}
             {{ form_widget(form.country, {'attr': {'class': 'form-select'}}) }}
-            {{ form_errors(form.country) }}
+            {% if (form_errors(form.country)) %}
+                <span class="form-error">{{ form_errors(form.country) }}</span>
+            {% endif %}
         </div>
 
         <div id="city-fields">
@@ -26,6 +28,9 @@
                     }
                 }) }}
             </div>
+            {% if (form_errors(form.name)) %}
+                <span class="form-error">{{ form_errors(form.name) }}</span>
+            {% endif %}
         </div>
 
         <!-- Add More Button -->
@@ -37,7 +42,6 @@
         <div class="form-check mb-3">
             {{ form_widget(form.active, {'attr': {'class': 'form-check-input'}}) }}
             {{ form_label(form.active, null, {'label_attr': {'class': 'form-check-label'}}) }}
-            {{ form_errors(form.active) }}
         </div>
 
         <!-- Submit + Back -->

@@ -28,7 +28,7 @@ class City
 
     /**
      * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="cities")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $country;
 
