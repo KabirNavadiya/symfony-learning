@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Countries{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="mb-0">Country List</h1>
+            <a href="{{ path('app_add_country') }}" class="btn btn-primary">+ Add Country</a>
+        </div>
+
+        {% for flash in app.flashes('success') %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ flash }}
+            </div>
+        {% endfor %}
+
+        {% for flash in app.flashes('error') %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ flash }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+
+        <form method="get" class="row g-2 mb-4">
+            <div class="col-md-6">
+                <input type="text" name="search" value="{{ search }}" class="form-control" placeholder="Search Country Name...">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-outline-primary w-100">Search</button>
+            </div>
+        </form>
+
+        <div class="table-responsive">
+            <table id="countryTable" class="table table-striped table-hover align-middle">
+                <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th style="width: 180px;">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for country in countries %}
+                    <tr>
+                        <td>{{ country.id }}</td>
+                        <td>{{ country.name }}</td>
+                        <td>
+                            <a href="{{ path('app_edit_country', { id: country.id }) }}" class="btn btn-sm btn-warning me-1">
+                                Edit
+                            </a>
+                            <form method="post" action="{{ path('app_delete_country', { id: country.id }) }}" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this country?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ country.id) }}">
+                                <button class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3" class="text-center text-muted">No countries found.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}{% endblock %}

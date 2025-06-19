@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add Address{% endblock %}
+
+{% block body %}
+    <style>
+        .form-error {
+            color: red;
+            font-size: 0.875rem;
+        }
+    </style>
+    <div class="container mt-4">
+        <h1>Add Address</h1>
+
+        {{ form_start(form) }}
+        <div class="mb-3">
+            {{ form_label(form.country) }}
+            {{ form_widget(form.country, { attr: { class: 'form-select' } }) }}
+            {% if (form_errors(form.country)) %}
+                <span class="form-error">{{ form_errors(form.country) }}</span>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.city) }}
+            {{ form_widget(form.city, { attr: { class: 'form-select' } }) }}
+            {% if (form_errors(form.city)) %}
+                <span class="form-error">{{ form_errors(form.city) }}</span>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.streetName) }}
+            {{ form_widget(form.streetName, { attr: { class: 'form-control', rows: 2 } }) }}
+            {% if (form_errors(form.streetName)) %}
+                <span class="form-error">{{ form_errors(form.streetName) }}</span>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.postcode) }}
+            {{ form_widget(form.postcode, { attr: { class: 'form-control', pattern: '\\d*' } }) }}
+            {% if (form_errors(form.postcode)) %}
+                <span class="form-error">{{ form_errors(form.postcode) }}</span>
+            {% endif %}
+        </div>
+
+        <button class="btn btn-success">Save</button>
+        <a href="{{ path('app_address_page') }}" class="btn btn-secondary">Cancel</a>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+
